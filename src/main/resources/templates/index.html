@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Demo App</title>
+  </head>
+
+  <body>
+    <br />
+    <div id="formContainer">
+      <form id="form">
+        <input
+          type="text"
+          id="framework"
+          name="framework"
+          placeholder="Framework name"
+        />
+        <select id="type" name="type">
+          <option value="Front-End">Front-End</option>
+          <option value="Back-End">Back-End</option>
+          <option value="Full stack">Full stack</option>
+        </select>
+        <input
+          type="text"
+          id="stars"
+          name="stars"
+          placeholder="Number or stars"
+        />
+        <button id="btn" type="button">Add framework</button>
+      </form>
+    </div>
+    <br />
+    <hr />
+    <br />
+    <div id="frameworks"></div>
+    <script>
+      "use strict";
+      let results = document.getElementById("frameworks");
+
+      async function init() {
+        let x;
+
+        let data = async () => {
+          const response = await fetch(
+            `http://localhost:8080/api/v1/frameworks`
+          );
+
+          if (response.status === 200) {
+            return await response.json();
+          } else {
+            console.log("error getting data!");
+          }
+        };
+
+        data().then((result) => {
+          console.log(result);
+          results.innerHTML = "";
+          result.forEach((element) => {
+            addDataToDom(element);
+          });
+        });
+      }
+      init();
+
+      function addDataToDom(element) {
+        results.insertAdjacentHTML("beforeend", getCard(element));
+      }
+
+      function getCard(element) {
+        return `<div class="container">
+                  <h3 id="name${element.id}" contenteditable=true>${element.name}</h3>
+                  <br>
+                  <h3 id="type${element.id}" contenteditable=true>${element.type}</h3>
+                  <div>
+                    <br>
+                  <span id="star${element.id}" contenteditable=true>${element.stars}</span> <i class="fas fa-star"></i>
+                </div>
+                <br>
+                <button id="edit" onclick="editFramework(${element.id})">Edit framework</button><br><br>
+                <i  onclick="deleteFramework(${element.id})" class="far fa-trash-alt"></i>
+                </div>
+                `;
+      }
+      btn.addEventListener("click", async function () {
+        let x;
+        let form = document.getElementById("form");
+        console.log(
+          form.elements["framework"].value,
+          form.elements["stars"].value,
+          form.elements["type"].value
+        );
+
+        try {
+          x = await fetch("http://localhost:8080/api/v1/frameworks", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({
+              name: form.elements["framework"].value,
+              stars: form.elements["stars"].value,
+              type: form.elements["type"].value,
+            }),
+          }).then((res) => init());
+        } catch (err) {
+          console.log(err);
+        }
+      });
+
+      async function editFramework(value) {
+        let x;
+        let name = document.getElementById(`name${value}`).innerHTML;
+        let type = document.getElementById(`type${value}`).innerHTML;
+        let star = document.getElementById(`star${value}`).innerHTML;
+        console.log(x);
+
+        try {
+          x = await fetch(
+            `http://localhost:8080/api/v1/frameworks/${value}?name=${name}&stars=${star}&type=${type}`,
+            {
+              method: "PUT",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+            }
+          ).then((res) => init());
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      async function deleteFramework(value) {
+        try {
+          await fetch(`http://localhost:8080/api/v1/frameworks/${value}`, {
+            method: "DELETE",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }).then((res) => init());
+        } catch (err) {
+          console.log(err);
+        }
+      }
+
+      function addFramework(e) {
+        e.preventDefault();
+        console.log("hee");
+      }
+    </script>
+  </body>
+</html>
