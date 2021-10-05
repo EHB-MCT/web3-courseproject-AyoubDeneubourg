@@ -11,11 +11,9 @@
 	<groupId>com.example</groupId>
 	<artifactId>demowebiii</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>demowebiii</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.runtime.version>1.8</java.runtime.version>
 	</properties>
 	<dependencies>
 		<dependency>
