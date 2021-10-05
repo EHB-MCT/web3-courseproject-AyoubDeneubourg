@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class FrameworkController {
     private final FrameworkService frameworkService;
 
