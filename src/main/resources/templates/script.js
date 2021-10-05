@@ -1,7 +1,7 @@
 "use strict";
 let results = document.getElementById("frameworks");
 
-async function init() {
+async function ggy() {
   let x;
   try {
     x = await fetch("http://localhost:8080/api/v1/frameworks", {
@@ -19,7 +19,7 @@ async function init() {
   });
 }
 
-init();
+ggy();
 
 function addDataToDom(element) {
   results.insertAdjacentHTML("beforeend", getCard(element));
@@ -66,10 +66,6 @@ btn.addEventListener("click", async function () {
   }
   console.log(x);
 });
-
-
-
-
 
 function addFramework(e) {
   e.preventDefault();

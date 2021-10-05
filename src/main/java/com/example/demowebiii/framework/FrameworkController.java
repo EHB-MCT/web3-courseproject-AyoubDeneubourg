@@ -5,17 +5,16 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping(path = "api/v1/frameworks")
-@CrossOrigin(origins = "http://127.0.0.1:5500")
-
-
-
 public class FrameworkController {
-
     private final FrameworkService frameworkService;
+
+
+
 
 
     @Autowired
@@ -24,27 +23,47 @@ public class FrameworkController {
     }
 
 
-    @GetMapping
+    @GetMapping("/")
+    public String initz() {
+        return "Welcome to API APPLICATION";
+    }
+
+
+    @GetMapping(path = "api/v1/frameworks")
     public List<Framework> getFrameworks() {
         return frameworkService.getFrameworks();
 
     }
 
-    @CrossOrigin
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/multiply")
+    public Map<String,String> multiply(@RequestParam("number" ) int number) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("result", number * number + "");
+        return map;
+
+    }
+
+
+    @RequestMapping(path = "api/v1/frameworks", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public void registerNewFramework(@RequestBody Framework framework) {
-            frameworkService.addNewFramework(framework);
+    public Map<String,String>  registerNewFramework(@RequestBody Framework framework) {
+        frameworkService.addNewFramework(framework);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("result", "Framework added");
+        return map;
     }
 
-    @DeleteMapping(path = "{frameworkID}")
-    public void deleteFramework(@PathVariable("frameworkID") Long frameworkId) {
+    @DeleteMapping(path = "api/v1/frameworks/{frameworkID}")
+    public Map<String,String> deleteFramework(@PathVariable("frameworkID") Long frameworkId) {
         frameworkService.deleteFramework(frameworkId);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("result", "Framework with id " + frameworkId + " deleted");
+        return map;
+
     }
 
-    @CrossOrigin
-    @PutMapping(path = "{frameworkId}")
-    public void updateFramework(
+    @PutMapping(path = "api/v1/frameworks/{frameworkId}")
+    public Map<String,String> updateFramework(
             @PathVariable("frameworkId") Long frameworkId,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String stars,
@@ -53,6 +72,10 @@ public class FrameworkController {
     ) {
 
         frameworkService.updateFramework(frameworkId, name, stars, type);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("result", "Framework with id " + frameworkId + " updated");
+        return map;
+
 
     }
 }

@@ -11,6 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>demowebiii</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>demowebiii</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -31,6 +32,7 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -50,6 +52,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-	</build>
+ 	</build>
 
 </project>
